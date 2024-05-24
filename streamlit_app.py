@@ -1,5 +1,8 @@
 # Import python packages
 import streamlit as st
+from snowflake.snowpark.functions import col
+import requests
+
 cnx = st.connection("snowflake")
 session = cnx.session()
 
@@ -13,21 +16,12 @@ st.write(
     """
 )
 
-# option = st.selectbox(
-#    "What is your fevorite fruit?",
-#    ("Banana", "Strawberries", "Peaches"),
-#    index=0,  # Default selection set to "Email"
-#    placeholder="Select contact method...",
-# )
 
-# st.write("You selected:", option)
-
-import streamlit as st
 
 name_on_order = st.text_input("Name on Smoothie:")
 st.write("Name on your Smoothie will be:", name_on_order)
 
-from snowflake.snowpark.functions import col
+
 
 # session = get_active_session()
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'))
@@ -36,14 +30,18 @@ my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT
 
 ingredients_list= st.multiselect('Choose upto 5 ingrediant',my_dataframe, max_selections = 5 )
 
-import requests
-fruityvice_response = requests.get("https://fruityvice.com/api/fruit/watermelon")
-# st.text(fruityvice_response.json())
-fv_df = st.dataframe(data=fruityvice_response.json(),use_container_width= True)
+
 
 if ingredients_list:
    
     ingredients_string =''
+
+    for fruit_chosen in ingredients_list:
+        ingredients_string +=fruit_chosen+' '
+        fruityvice_response = requests.get("https://fruityvice.com/api/fruit/watermelon")
+        # st.text(fruityvice_response.json())
+        fv_df = st.dataframe(data=fruityvice_response.json(),use_container_width= True)
+
 
     for each_fruit in ingredients_list:
         ingredients_string +=each_fruit+' '
