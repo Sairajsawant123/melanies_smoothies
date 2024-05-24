@@ -38,7 +38,7 @@ ingredients_list= st.multiselect('Choose upto 5 ingrediant',my_dataframe, max_se
 
 import requests
 fruityvice_response = requests.get("https://fruityvice.com/api/fruit/watermelon")
-st.text(fruityvice_response)
+st.text(fruityvice_response.json())
 
 if ingredients_list:
    
