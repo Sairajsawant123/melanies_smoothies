@@ -49,8 +49,8 @@ if ingredients_list:
         fv_df = st.dataframe(data=fruityvice_response.json(),use_container_width= True)
 
 
-    for each_fruit in ingredients_list:
-        ingredients_string +=each_fruit+' '
+    # for each_fruit in ingredients_list:
+    #     ingredients_string +=each_fruit+' '
         
     st.write(ingredients_string)
     my_insert_stmt = """ insert into smoothies.public.orders (ingredients,name_on_order)
